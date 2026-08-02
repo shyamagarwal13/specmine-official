@@ -1,0 +1,9 @@
+# never commit credentials or local env
+.env
+*.env
+.git-credentials
+
+# python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
