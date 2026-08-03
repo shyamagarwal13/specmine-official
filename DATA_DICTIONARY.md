@@ -296,11 +296,11 @@ Metadata of the repository git tree that tree-provenance references resolve agai
 
 ## `pull_requests` — 25 columns
 
-PR layer (11 per-tool <tool>_prs tables unioned, with a `tool` column): every pull request that touches a spec file, one row per PR.
+PR layer (the 11 per-tool <tool>_prs tables unioned, 10 non-empty, with a `tool` column): every pull request that touches a spec file, one row per PR.
 
 | column | type | description |
 |---|---|---|
-| `tool` | varchar(16) | SDD tool this PR row was discovered under (one of 11 mined tools). |
+| `tool` | varchar(16) | SDD tool this PR row was discovered under (10 of the 11 swept tools appear; specweave yielded none). |
 | `id` | bigint(20) |  |
 | `repo_name` | varchar(511) | owner/repo slug (join key to every other layer). |
 | `pr_number` | int(11) | pull request number. |
@@ -328,11 +328,11 @@ PR layer (11 per-tool <tool>_prs tables unioned, with a `tool` column): every pu
 
 ## `pr_files` — 12 columns
 
-PR layer (11 per-tool <tool>_pr_files tables unioned): the complete per-file changeset of each spec-touching PR, each file flagged spec/code.
+PR layer (the 11 per-tool <tool>_pr_files tables unioned, 10 non-empty): the per-file changeset of each spec-touching PR (complete up to GitHub's 3,000-file-per-PR cap), each file flagged spec/code.
 
 | column | type | description |
 |---|---|---|
-| `tool` | varchar(16) | SDD tool this PR row was discovered under (one of 11 mined tools). |
+| `tool` | varchar(16) | SDD tool this PR row was discovered under (10 of the 11 swept tools appear; specweave yielded none). |
 | `id` | bigint(20) |  |
 | `repo_name` | varchar(511) | owner/repo slug (join key to every other layer). |
 | `pr_number` | int(11) | pull request number. |
