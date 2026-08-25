@@ -6,13 +6,14 @@ agents turn into code, attributed to the tool that produced them, enriched with
 full repository metadata and commit history, and, for a subsample of
 repositories, followed into the pull requests that change them.
 
-This repository is the **curated 500-repository sample** provided for the MSR 2027
-Mining Challenge organizing committee. It is a faithful slice of every layer of
-the full dataset, small enough to clone and query in minutes. The full v1.0
-snapshot (a MySQL dump plus CSV/Parquet exports and the complete spec-contents
-JSONL) will be released on Zenodo with a citable DOI on acceptance.
+This repository is the **curated 500-repository sample** for the MSR 2027 Mining
+Challenge. It is a faithful slice of every layer of the full dataset, small enough
+to clone and query in minutes. The full v1.0 dataset (MySQL dump plus CSV/Parquet
+exports and the complete spec-contents JSONL) is published on Zenodo, with a
+per-table Parquet mirror on Hugging Face:
 
-- **Proposal:** `mining-challenge-proposal-2027` (this sample is the artifact it references).
+- **Full dataset (Zenodo, citable DOI):** <https://doi.org/10.5281/zenodo.22102779>
+- **Parquet mirror (Hugging Face):** <https://huggingface.co/datasets/ShyAgarwal/specmine>
 - **Snapshot:** SpecMine v1.0, July 2026.
 
 ## What SpecMine captures (full dataset)
@@ -142,3 +143,21 @@ to license-compatible subsets; redistribution follows each repository's own
 terms. Public handles are kept; private contact details are not. Please avoid
 deanonymization and keep personal data out of published results beyond aggregate
 analysis.
+
+## Citation
+
+Cite the SpecMine dataset (Zenodo v1.0):
+
+```bibtex
+@dataset{specmine_v1_2026,
+  author    = {Agarwal, Shyam and Vasilescu, Bogdan},
+  title     = {SpecMine: A Large-Scale Corpus of Spec-Driven Development Artifacts (v1.0)},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22102779},
+  url       = {https://doi.org/10.5281/zenodo.22102779}
+}
+```
+
+The accompanying MSR 2027 Mining Challenge paper will be linked here once the
+preprint is posted.

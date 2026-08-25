@@ -134,7 +134,7 @@ CREATE TABLE `spec_files` (
   `has_proposal` tinyint(4),
   `has_design` tinyint(4),
   `trace_rollup_at` varchar(32)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `spec_file_commits` (
   `id` bigint(20),
@@ -161,7 +161,7 @@ CREATE TABLE `spec_file_commits` (
   `parents` text,
   `verified` tinyint(1),
   `verification_reason` varchar(64)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `spec_content_features` (
   `file_url_sha16` char(16),
@@ -204,7 +204,7 @@ CREATE TABLE `spec_content_features` (
   `has_lorem` tinyint(4),
   `lang` varchar(8),
   `content_family` varchar(24)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `spec_links` (
   `id` bigint(20),
@@ -212,7 +212,7 @@ CREATE TABLE `spec_links` (
   `rel` varchar(16),
   `target` varchar(500),
   `provenance` varchar(24)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `kiro_files` (
   `id` bigint(20),
@@ -227,7 +227,7 @@ CREATE TABLE `kiro_files` (
   `html_url` text,
   `git_url` text,
   `fetched_at` varchar(32)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `openspec_artifact_files` (
   `id` bigint(20),
@@ -242,7 +242,7 @@ CREATE TABLE `openspec_artifact_files` (
   `n_code_refs` int(11),
   `fetch_status` varchar(16),
   `fetched_at` varchar(32)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `openspec_code_refs` (
   `id` bigint(20),
@@ -253,7 +253,7 @@ CREATE TABLE `openspec_code_refs` (
   `anchor_sha` char(40),
   `exists_at_anchor` tinyint(4),
   `resolved_path` varchar(700)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `repo_trees` (
   `repo_name` varchar(511),
@@ -261,7 +261,7 @@ CREATE TABLE `repo_trees` (
   `n_entries` int(11),
   `truncated` tinyint(4),
   `fetched_at` varchar(32)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `pull_requests` (
   `tool` varchar(16),
@@ -289,7 +289,7 @@ CREATE TABLE `pull_requests` (
   `touches_code` tinyint(4),
   `n_code_outside` int(11),
   `n_prs_in_repo` int(11)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `pr_files` (
   `tool` varchar(16),
@@ -304,4 +304,4 @@ CREATE TABLE `pr_files` (
   `is_spec` tinyint(4),
   `is_code` tinyint(4),
   `ext` varchar(16)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
