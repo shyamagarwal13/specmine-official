@@ -126,10 +126,10 @@ with `pandas.DataFrame.to_sql`, or convert to CSV and `LOAD DATA`).
   truncated at GitHub's 3,000-file-per-PR cap and 2 because the spec commit sits in
   shared or ancestor history that the net diff no longer shows. Filter on
   `n_spec_files > 0` if you need every PR to contain a visible spec file.
-- **Kept set.** The sample ships only kept specs (`not_spec_filter = 0`). The full
-  release also retains filtered rows (package caches, vendored trees, pre-2024
-  files) with the flag and reason that fired, so the not-a-spec filter can be
-  audited and reversed.
+- **Kept set.** Both the sample and the full release ship only kept specs
+  (`not_spec_filter = 0`). The not-a-spec filter (package caches, vendored trees,
+  pre-2024 files) is a documented, reversible rule, so any excluded file can be
+  recovered by re-running the pipeline or re-fetching it from GitHub.
 - **Dropped columns.** Commit-email addresses, GPG-signature blobs, and avatar
   URLs are dropped at release time; raw `file_content` moves to `specs.jsonl.gz`.
   Author and committer logins and numeric IDs are kept (they are public and are
