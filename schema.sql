@@ -1,8 +1,7 @@
--- SpecMine v1.0 sample schema (matches the Parquet files in data/).
--- In the full MySQL release the PR layer is stored as 11 per-tool tables
--- (<tool>_prs / <tool>_pr_files); the sample unions them and adds a `tool` column.
--- Commit-email, GPG-signature, and raw file_content columns are omitted at release
--- (file_content ships in specs.jsonl.gz); see the ethics section of the proposal.
+-- SpecMine v1.1 schema (matches the Parquet files in data/).
+-- The PR layer is stored internally as 11 per-tool tables (<tool>_prs / <tool>_pr_files);
+-- this release unions them and adds a `tool` column. Commit-email, avatar-URL, and
+-- GPG-signature columns are dropped at release; file_content ships in specs.jsonl.gz.
 
 CREATE TABLE `spec_files` (
   `file_url_sha16` char(16),
@@ -26,7 +25,6 @@ CREATE TABLE `spec_files` (
   `owner_node_id` varchar(255),
   `owner_type` varchar(64),
   `owner_html_url` text,
-  `owner_avatar_url` text,
   `owner_site_admin` tinyint(1),
   `repo_stars` int(11),
   `repo_forks` int(11),
@@ -71,7 +69,6 @@ CREATE TABLE `spec_files` (
   `file_last_commit_author_id` bigint(20),
   `file_last_commit_author_type` varchar(64),
   `file_last_commit_author_html_url` text,
-  `file_last_commit_author_avatar_url` text,
   `file_last_commit_author_site_admin` tinyint(1),
   `file_last_commit_committer` text,
   `file_last_commit_committer_at` varchar(64),
@@ -79,7 +76,6 @@ CREATE TABLE `spec_files` (
   `file_last_commit_committer_id` bigint(20),
   `file_last_commit_committer_type` varchar(64),
   `file_last_commit_committer_html_url` text,
-  `file_last_commit_committer_avatar_url` text,
   `file_last_commit_committer_site_admin` tinyint(1),
   `file_last_commit_tree_sha` varchar(64),
   `file_last_commit_parents` text,
@@ -100,7 +96,6 @@ CREATE TABLE `spec_files` (
   `file_first_commit_author_id` bigint(20),
   `file_first_commit_author_type` varchar(64),
   `file_first_commit_author_html_url` text,
-  `file_first_commit_author_avatar_url` text,
   `file_first_commit_author_site_admin` tinyint(1),
   `file_first_commit_committer` text,
   `file_first_commit_committer_at` varchar(64),
@@ -108,7 +103,6 @@ CREATE TABLE `spec_files` (
   `file_first_commit_committer_id` bigint(20),
   `file_first_commit_committer_type` varchar(64),
   `file_first_commit_committer_html_url` text,
-  `file_first_commit_committer_avatar_url` text,
   `file_first_commit_committer_site_admin` tinyint(1),
   `file_first_commit_tree_sha` varchar(64),
   `file_first_commit_parents` text,
@@ -226,7 +220,106 @@ CREATE TABLE `kiro_files` (
   `file_sha` varchar(64),
   `html_url` text,
   `git_url` text,
-  `fetched_at` varchar(32)
+  `fetched_at` varchar(32),
+  `file_content_sha` char(64),
+  `file_content_bytes` int(11),
+  `content_fetch_status` varchar(16),
+  `file_total_commits` int(11),
+  `commit_history_status` varchar(16)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `kiro_repos` (
+  `repo_name` varchar(511),
+  `repo_id` bigint(20),
+  `repo_node_id` varchar(255),
+  `repo_url` text,
+  `repo_homepage` text,
+  `repo_description` text,
+  `repo_fork` tinyint(1),
+  `repo_visibility` varchar(32),
+  `owner_login` varchar(255),
+  `owner_id` bigint(20),
+  `owner_type` varchar(64),
+  `repo_stars` int(11),
+  `repo_forks` int(11),
+  `repo_watchers` int(11),
+  `repo_open_issues` int(11),
+  `repo_size_kb` int(11),
+  `repo_language` varchar(128),
+  `repo_license_key` varchar(64),
+  `repo_license_spdx_id` varchar(64),
+  `repo_default_branch` varchar(255),
+  `repo_topics` text,
+  `repo_archived` tinyint(1),
+  `repo_disabled` tinyint(1),
+  `repo_is_template` tinyint(1),
+  `repo_created_at` varchar(64),
+  `repo_updated_at` varchar(64),
+  `repo_pushed_at` varchar(64),
+  `fetch_status` varchar(16),
+  `fetched_at` varchar(64)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `kiro_file_commits` (
+  `id` bigint(20),
+  `kiro_file_id` bigint(20),
+  `repo_name` varchar(511),
+  `file_path` text,
+  `seq_from_oldest` int(11),
+  `commit_sha` varchar(64),
+  `authored_at` varchar(64),
+  `author_name` text,
+  `author_login` varchar(255),
+  `author_id` bigint(20),
+  `committed_at` varchar(64),
+  `committer_name` text,
+  `committer_login` varchar(255),
+  `committer_id` bigint(20),
+  `message` longtext,
+  `html_url` text
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `kiro_content_features` (
+  `kiro_file_id` bigint(20),
+  `n_bytes` int(11),
+  `n_lines` int(11),
+  `n_words` int(11),
+  `n_headings` int(11),
+  `max_heading_depth` int(11),
+  `n_code_fences` int(11),
+  `n_mermaid` int(11),
+  `n_tables` int(11),
+  `n_links` int(11),
+  `n_images` int(11),
+  `n_list_items` int(11),
+  `n_checkboxes` int(11),
+  `n_checked` int(11),
+  `n_shall` int(11),
+  `n_gherkin` int(11),
+  `n_scenario_blocks` int(11),
+  `n_delta_headers` int(11),
+  `n_needs_clarification` int(11),
+  `n_todo` int(11),
+  `has_ears` tinyint(4),
+  `has_gherkin` tinyint(4),
+  `has_user_story` tinyint(4),
+  `has_requirements` tinyint(4),
+  `has_acceptance_criteria` tinyint(4),
+  `has_user_scenarios` tinyint(4),
+  `has_non_goals` tinyint(4),
+  `has_out_of_scope` tinyint(4),
+  `has_overview` tinyint(4),
+  `has_success_criteria` tinyint(4),
+  `has_edge_cases` tinyint(4),
+  `has_open_questions` tinyint(4),
+  `has_dependencies` tinyint(4),
+  `has_purpose` tinyint(4),
+  `has_mandatory_marker` tinyint(4),
+  `is_tiny` tinyint(4),
+  `has_unfilled_placeholder` tinyint(4),
+  `has_lorem` tinyint(4),
+  `lang` varchar(8),
+  `content_family` varchar(24)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `openspec_artifact_files` (

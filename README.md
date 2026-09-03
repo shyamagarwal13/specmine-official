@@ -1,4 +1,4 @@
-# SpecMine v1.0 — 500-repository sample
+# SpecMine v1.1 — 500-repository sample
 
 SpecMine is a large-scale corpus of **Spec-Driven Development (SDD)** artifacts
 mined from public GitHub repositories: the Markdown specifications that AI coding
@@ -14,7 +14,10 @@ per-table Parquet mirror on Hugging Face:
 
 - **Full dataset (Zenodo, citable DOI):** <https://doi.org/10.5281/zenodo.22102779>
 - **Parquet mirror (Hugging Face):** <https://huggingface.co/datasets/ShyAgarwal/specmine>
-- **Snapshot:** SpecMine v1.0, July 2026.
+- **Snapshot:** SpecMine v1.1, July 2026 snapshot (Kiro census fully enriched in v1.1:
+  content, repository objects, commit histories capped at the broad census's
+  2026-07-11 crawl end, and the 39 features — this sample carries the enriched
+  Kiro tables for its 100 Kiro repositories).
 
 ## What SpecMine captures (full dataset)
 
@@ -53,13 +56,17 @@ data/                         Parquet, one file per released table (zstd)
   spec_file_commits.parquet   per-file commit history
   spec_content_features.parquet   39 structural / requirement-template features per spec
   spec_links.parquet          traceability index (typed references)
-  kiro_files.parquet          Kiro requirements / design / tasks
+  kiro_files.parquet          Kiro requirements / design / tasks (+ content hashes, commit counts)
+  kiro_repos.parquet          v1.1: repository objects for the sample's Kiro repos
+  kiro_file_commits.parquet   v1.1: per-artifact Kiro commit histories
+  kiro_content_features.parquet   v1.1: 39 features over Kiro artifact content
   openspec_artifact_files.parquet   OpenSpec proposals / designs / task lists (+ content)
   openspec_code_refs.parquet  OpenSpec task-to-code refs resolved on the git tree
   pull_requests.parquet       PR layer: the 11 <tool>_prs tables unioned (10 non-empty), with a `tool` column
   pr_files.parquet            PR layer: per-file changesets, each file flagged spec/code
   repo_trees.parquet          git-tree metadata references resolve against
-specs.jsonl.gz                raw Markdown of every sample spec (one JSON object per line)
+specs.jsonl.gz                raw Markdown of every sample broad-census spec
+kiro_specs.jsonl.gz           v1.1: raw Markdown of the sample's Kiro artifacts
 schema.sql                    CREATE TABLE for each shipped table (MySQL types)
 DATA_DICTIONARY.md            every shipped column, typed and described
 sample_repos.txt              the 500 repo_name values in this sample
@@ -146,12 +153,12 @@ analysis.
 
 ## Citation
 
-Cite the SpecMine dataset (Zenodo v1.0):
+Cite the SpecMine dataset (Zenodo, latest version):
 
 ```bibtex
 @dataset{specmine_v1_2026,
   author    = {Agarwal, Shyam and Vasilescu, Bogdan},
-  title     = {SpecMine: A Large-Scale Corpus of Spec-Driven Development Artifacts (v1.0)},
+  title     = {SpecMine: A Large-Scale Corpus of Spec-Driven Development Artifacts},
   year      = {2026},
   publisher = {Zenodo},
   doi       = {10.5281/zenodo.22102779},
