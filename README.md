@@ -25,7 +25,7 @@ per-table Parquet mirror on Hugging Face:
 |---|---:|---|
 | Broad census (`spec.md`/`specs.md`, 17 named tools) | 470,795 specs / 73,030 repos | 28,583 specs / 415 repos |
 | Kiro census (`.kiro/specs` requirements/design/tasks) | 98,574 artifacts / 12,910 repos | 18,585 / 100 repos |
-| PR layer (spec-touching PRs, ≥10-star repos) | 5,992 PRs / 581 repos | 5,335 PRs / 229 repos |
+| PR layer (spec-touching PRs, ≥10-star repos) | 5,979 PRs / 581 repos | 5,335 PRs / 229 repos |
 | OpenSpec change artifacts | 266,230 | 22,992 |
 | Traceability index (typed references) | 2,421,323 | 261,032 |
 
@@ -129,7 +129,7 @@ with `pandas.DataFrame.to_sql`, or convert to CSV and `LOAD DATA`).
   commit that modified a spec file is associated with it (GitHub's
   `/commits/{sha}/pulls`); the changeset then comes from the PR's net diff
   (`/pulls/{num}/files`). These two GitHub views can disagree, so a few PRs carry
-  `n_spec_files = 0`: 5 of 5,992 (0.08%) in the full dataset, 3 because the diff is
+  `n_spec_files = 0`: 5 of 5,979 (0.08%) in the full dataset, 3 because the diff is
   truncated at GitHub's 3,000-file-per-PR cap and 2 because the spec commit sits in
   shared or ancestor history that the net diff no longer shows. Filter on
   `n_spec_files > 0` if you need every PR to contain a visible spec file.
