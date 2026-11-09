@@ -1,4 +1,4 @@
-# SpecMine v1.1 — 500-repository sample
+# SpecMine — 500-repository sample of v1.0
 
 SpecMine is a large-scale corpus of **Spec-Driven Development (SDD)** artifacts
 mined from public GitHub repositories: the Markdown specifications that AI coding
@@ -14,10 +14,11 @@ per-table Parquet mirror on Hugging Face:
 
 - **Full dataset (Zenodo, citable DOI):** <https://doi.org/10.5281/zenodo.22102779>
 - **Parquet mirror (Hugging Face):** <https://huggingface.co/datasets/ShyAgarwal/specmine>
-- **Snapshot:** SpecMine v1.1, July 2026 snapshot (Kiro census fully enriched in v1.1:
-  content, repository objects, commit histories capped at the broad census's
-  2026-07-11 crawl end, and the 39 features — this sample carries the enriched
-  Kiro tables for its 100 Kiro repositories).
+- **Snapshot:** SpecMine v1.0, July 2026. This sample is a slice of v1.0 and
+  additionally carries the enriched Kiro tables for its 100 Kiro repositories:
+  repository objects, commit histories capped at the broad census's 2026-07-11
+  crawl end, content, and the 39 features. Those four Kiro tables are **not in
+  the v1.0 Zenodo archive**, which ships `kiro_files` as metadata only.
 
 ## What SpecMine captures (full dataset)
 
@@ -57,16 +58,16 @@ data/                         Parquet, one file per released table (zstd)
   spec_content_features.parquet   39 structural / requirement-template features per spec
   spec_links.parquet          traceability index (typed references)
   kiro_files.parquet          Kiro requirements / design / tasks (+ content hashes, commit counts)
-  kiro_repos.parquet          v1.1: repository objects for the sample's Kiro repos
-  kiro_file_commits.parquet   v1.1: per-artifact Kiro commit histories
-  kiro_content_features.parquet   v1.1: 39 features over Kiro artifact content
+  kiro_repos.parquet          sample-only: repository objects for the sample's Kiro repos
+  kiro_file_commits.parquet   sample-only: per-artifact Kiro commit histories
+  kiro_content_features.parquet   sample-only: 39 features over Kiro artifact content
   openspec_artifact_files.parquet   OpenSpec proposals / designs / task lists (+ content)
   openspec_code_refs.parquet  OpenSpec task-to-code refs resolved on the git tree
   pull_requests.parquet       PR layer: the 11 <tool>_prs tables unioned (10 non-empty), with a `tool` column
   pr_files.parquet            PR layer: per-file changesets, each file flagged spec/code
   repo_trees.parquet          git-tree metadata references resolve against
 specs.jsonl.gz                raw Markdown of every sample broad-census spec
-kiro_specs.jsonl.gz           v1.1: raw Markdown of the sample's Kiro artifacts
+kiro_specs.jsonl.gz           sample-only: raw Markdown of the sample's Kiro artifacts
 schema.sql                    CREATE TABLE for each shipped table (MySQL types)
 DATA_DICTIONARY.md            every shipped column, typed and described
 sample_repos.txt              the 500 repo_name values in this sample
@@ -120,11 +121,13 @@ with `pandas.DataFrame.to_sql`, or convert to CSV and `LOAD DATA`).
 
 ## How the sample maps to the full release
 
-- **PR layer.** The full MySQL release stores the PR layer as 11 per-tool table
-  pairs (`openspec_prs`/`openspec_pr_files`, `speckit_prs`/`speckit_pr_files`, and
-  so on). This sample unions them into `pull_requests.parquet` and
-  `pr_files.parquet` and adds a `tool` column, which is easier to query and
-  loses nothing.
+- **PR layer.** The crawl wrote 11 per-tool table pairs
+  (`openspec_prs`/`openspec_pr_files`, `speckit_prs`/`speckit_pr_files`, and so
+  on). Both this sample and the full release concatenate them into
+  `pull_requests` and `pr_files` with a `tool` column; the per-tool tables are
+  not shipped. Concatenation is not deduplication: 8 PRs appear under more than
+  one tool because their repository ships more than one, adding 13 rows, so
+  `pull_requests` holds 5,992 rows for 5,979 distinct PRs.
 - **What "spec-touching" means, and orphan PRs.** A PR enters the sweep when a
   commit that modified a spec file is associated with it (GitHub's
   `/commits/{sha}/pulls`); the changeset then comes from the PR's net diff
